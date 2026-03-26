@@ -2,7 +2,7 @@
 
 A lightweight web app to search Mastodon users in real-time using the public Mastodon API.
 
-🌐 **Live Demo:** [https://your-live-link-here.com](https://ayush712gupta.github.io/mastodon-user-search/)
+🌐 **Live Demo:** [Mastodon-Search-Tool](https://ayush712gupta.github.io/mastodon-user-search/)
 
 ---
 
