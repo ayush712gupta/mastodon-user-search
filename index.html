@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="shortcut icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Mastodon_logotype_%28simple%29_new_hue.svg/3840px-Mastodon_logotype_%28simple%29_new_hue.svg.png" type="image/x-icon">
+  <title>Mastodon Search UI</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #f5f7fb;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .search-box {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+      gap: 10px;
+    }
+
+    input, select, button {
+      padding: 10px;
+      font-size: 16px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .card img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+    }
+
+    .card h3 {
+      margin: 10px 0 5px;
+    }
+
+    .username {
+      color: gray;
+      font-size: 14px;
+    }
+
+    .stats {
+      margin-top: 10px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Mastodon Search</h1>
+
+<div class="search-box">
+  <input type="text" id="query" placeholder="Search..." />
+  
+  <select id="type">
+    <option value="accounts">Accounts</option>
+    <option value="statuses">Statuses</option>
+    <option value="hashtags">Hashtags</option>
+  </select>
+
+  <input type="number" id="limit" placeholder="Limit" value="10" />
+
+  <button onclick="search()">Search</button>
+</div>
+
+<div class="cards" id="results"></div>
+
+<script>
+async function search() {
+  const q = document.getElementById("query").value;
+  const type = document.getElementById("type").value;
+  const limit = document.getElementById("limit").value;
+
+  const url = `https://mastodon.social/api/v2/search?q=${q}&type=${type}&limit=${limit}`;
+
+  const res = await fetch(url);
+  const data = await res.json();
+
+  const container = document.getElementById("results");
+  container.innerHTML = "";
+
+  if (type === "accounts") {
+    data.accounts.forEach(acc => {
+      container.innerHTML += `
+        <div class="card">
+          <img src="${acc.avatar}" />
+          <h3>${acc.display_name}</h3>
+          <div class="username">@${acc.acct}</div>
+          <div class="stats">
+            Followers: ${acc.followers_count}<br>
+            Following: ${acc.following_count}<br>
+            Posts: ${acc.statuses_count}
+          </div>
+        </div>
+      `;
+    });
+  }
+
+  if (type === "statuses") {
+    data.statuses.forEach(post => {
+      container.innerHTML += `
+        <div class="card">
+          <h3>${post.account.display_name}</h3>
+          <div>${post.content}</div>
+        </div>
+      `;
+    });
+  }
+
+  if (type === "hashtags") {
+    data.hashtags.forEach(tag => {
+      container.innerHTML += `
+        <div class="card">
+          <h3>#${tag.name}</h3>
+          <div>Used: ${tag.history?.[0]?.uses || 0}</div>
+        </div>
+      `;
+    });
+  }
+}
+</script>
+
+</body>
+</html>
