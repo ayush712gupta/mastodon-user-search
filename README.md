@@ -29,7 +29,9 @@ A lightweight web app to search Mastodon users in real-time using the public Mas
 
 <!-- Add your screenshot -->
 
-![App Screenshot](./screenshot.png)
+<img width="1926" height="874" alt="image" src="https://github.com/user-attachments/assets/9d9c2b53-090a-454e-903a-57e3776bc2a3" />
+
+<img width="1922" height="872" alt="image" src="https://github.com/user-attachments/assets/111a4a2b-82df-4bc7-b502-b6e511971acc" />
 
 ---
 
